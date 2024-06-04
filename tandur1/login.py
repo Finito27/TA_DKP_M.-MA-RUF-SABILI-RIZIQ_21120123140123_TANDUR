@@ -8,6 +8,12 @@ st.write("Platform Penghubung Investor dan Petani")
 
 # Fungsi untuk memverifikasi login
 def verify_login(username, password):
+    if '@' not in username:
+        st.error("Username harus berisi '@' seperti email!")
+        return
+    if len(password) < 8:
+        st.error("Password harus memiliki minimal 8 karakter!")
+        return
     if os.path.exists('users.json'):
         with open('users.json', 'r') as file:
             users = json.load(file)
@@ -25,7 +31,12 @@ def register_account(username, password):
     if not username or not password:
         st.error("Username dan password tidak boleh kosong!")
         return
-
+    if '@' not in username:
+        st.error("Username harus berisi '@' seperti email!")
+        return
+    if len(password) < 8:
+        st.error("Password harus memiliki minimal 8 karakter!")
+        return
     if os.path.exists('users.json'):
         with open('users.json', 'r') as file:
             users = json.load(file)
@@ -56,7 +67,7 @@ def main():
     else:
         with st.form("login_form"):
             st.title("Halaman Login")
-            username = st.text_input("Username")
+            username = st.text_input("Username", value="", placeholder="contoh: johndoe@example.com")
             password = st.text_input("Password", type="password")
             submitted = st.form_submit_button("Login")
             if submitted:
@@ -64,7 +75,7 @@ def main():
 
         with st.form("register_form"):
             st.title("Registrasi Akun Baru")
-            new_username = st.text_input("Buat Username Baru")
+            new_username = st.text_input("Buat Username Baru", value="", placeholder="contoh: johndoe@example.com")
             new_password = st.text_input("Buat Password Baru", type="password")
             register_submitted = st.form_submit_button("Daftar")
             if register_submitted:
